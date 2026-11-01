@@ -1,574 +1,632 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>विधि डायरी (Vidhi Diary) - ऑफ़लाइन-फ़र्स्ट केस डायरी एवं कॉज लिस्ट</title>
-    
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    
-    <!-- Google Identity Services (GSI) Client -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans Devanagari", sans-serif;
-            background: #0B1120;
-            color: #F8FAFC;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 16px 14px;
-        }
-        .container {
-            max-width: 920px;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        /* Top Header & Navigation */
-        .navbar {
-            background: #1E293B;
-            border: 1px solid #334155;
-            border-radius: 16px;
-            padding: 14px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 18px;
-            font-weight: 800;
-            color: #FFFFFF;
-            cursor: pointer;
-            user-select: none;
-            -webkit-user-select: none;
-        }
-        .brand-icon {
-            font-size: 26px;
-        }
-        .nav-links {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        .nav-btn {
-            background: #0F172A;
-            color: #94A3B8;
-            border: 1px solid #334155;
-            padding: 8px 14px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s ease;
-        }
-        .nav-btn:hover {
-            color: #FFFFFF;
-            border-color: #64748B;
-            background: #1E293B;
-        }
-        .nav-btn.active {
-            color: #38BDF8;
-            border-color: #38BDF8;
-            background: rgba(56, 189, 248, 0.12);
-        }
-
-        /* Top APK Download Badge */
-        .apk-download-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: linear-gradient(135deg, #10B981, #059669);
-            color: #FFFFFF;
-            font-size: 13px;
-            font-weight: 700;
-            padding: 8px 16px;
-            border-radius: 10px;
-            text-decoration: none;
-            box-shadow: 0 4px 12px rgba(16,185,129,0.3);
-            cursor: pointer;
-            border: none;
-            transition: transform 0.15s ease;
-        }
-        .apk-download-badge:hover {
-            transform: translateY(-1px);
-            background: linear-gradient(135deg, #059669, #047857);
-        }
-
-        /* Sync Status Badge */
-        .sync-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 11.5px;
-            font-weight: 600;
-            padding: 4px 10px;
-            border-radius: 20px;
-            background: #0F172A;
-            border: 1px solid #334155;
-            color: #10B981;
-        }
-        .sync-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #10B981;
-            display: inline-block;
-            box-shadow: 0 0 6px #10B981;
-        }
-
-        /* Card Container */
-        .card {
-            background: #1E293B;
-            border: 1px solid #334155;
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Google Sign-In Premium Button */
-        .btn-google-signin {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            width: 100%;
-            background: #FFFFFF;
-            color: #1F2937;
-            font-size: 16px;
-            font-weight: 700;
-            padding: 15px 24px;
-            border-radius: 12px;
-            border: 1px solid #E5E7EB;
-            cursor: pointer;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.25);
-            transition: all 0.2s ease;
-        }
-        .btn-google-signin:hover {
-            background: #F8FAFC;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.35);
-            transform: translateY(-1px);
-        }
-
-        /* WhatsApp Action Buttons */
-        .btn-whatsapp {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: #25D366;
-            color: #FFFFFF;
-            font-weight: 700;
-            font-size: 13.5px;
-            padding: 10px 18px;
-            border-radius: 10px;
-            text-decoration: none;
-            box-shadow: 0 4px 12px rgba(37,211,102,0.3);
-            border: none;
-            cursor: pointer;
-            transition: all 0.15s ease;
-        }
-        .btn-whatsapp:hover {
-            background: #1EBE5D;
-            color: #FFFFFF;
-            transform: translateY(-1px);
-        }
-
-        /* Advocate Email Chip */
-        .user-gmail-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: #0F172A;
-            border: 1.5px solid #38BDF8;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 13.5px;
-            color: #E2E8F0;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        /* 6-Digit License Input Box */
-        .license-key-box {
-            font-family: monospace;
-            font-size: 28px;
-            letter-spacing: 8px;
-            text-align: center;
-            padding: 12px 16px;
-            border-radius: 12px;
-            background: #0F172A;
-            border: 2px solid #F59E0B;
-            color: #FBBF24;
-            font-weight: 800;
-            width: 250px;
-            outline: none;
-            box-shadow: 0 0 15px rgba(245,158,11,0.2);
-            transition: all 0.2s ease;
-        }
-        .license-key-box:focus {
-            border-color: #10B981;
-            box-shadow: 0 0 18px rgba(16,185,129,0.35);
-            color: #10B981;
-        }
-
-        /* Golden Key Box in Admin */
-        .golden-key-badge {
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.25));
-            border: 1.5px solid #F59E0B;
-            border-radius: 12px;
-            padding: 14px 20px;
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            font-family: monospace;
-            font-size: 26px;
-            font-weight: 800;
-            color: #FBBF24;
-            letter-spacing: 6px;
-            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.25);
-        }
-
-        /* Google Drive Sync Pill */
-        .gdrive-sync-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 12px;
-            font-weight: 700;
-            padding: 5px 12px;
-            border-radius: 20px;
-            background: rgba(56, 189, 248, 0.12);
-            border: 1px solid #38BDF8;
-            color: #38BDF8;
-        }
-
-        /* Action Buttons */
-        .btn-save {
-            background: linear-gradient(135deg, #10B981, #059669);
-            color: #FFFFFF;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 13.5px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s ease;
-        }
-        .btn-save:hover {
-            background: linear-gradient(135deg, #059669, #047857);
-            transform: translateY(-1px);
-        }
-        .btn-cancel {
-            background: #0F172A;
-            color: #94A3B8;
-            border: 1px solid #334155;
-            padding: 10px 18px;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 13.5px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s ease;
-        }
-        .btn-cancel:hover {
-            color: #FFFFFF;
-            border-color: #64748B;
-        }
-
-        /* Forms */
-        .form-group {
-            margin-bottom: 14px;
-            text-align: left;
-        }
-        .form-label {
-            display: block;
-            font-size: 12.5px;
-            font-weight: 600;
-            color: #CBD5E1;
-            margin-bottom: 5px;
-        }
-        .form-control {
-            width: 100%;
-            padding: 10px 14px;
-            background: #0F172A;
-            border: 1px solid #334155;
-            border-radius: 10px;
-            color: #FFFFFF;
-            font-size: 14px;
-            outline: none;
-            transition: border-color 0.2s ease;
-        }
-        .form-control:focus {
-            border-color: #38BDF8;
-        }
-        .form-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 12px;
-        }
-
-        /* Case Card */
-        .case-card {
-            background: #0F172A;
-            border: 1px solid #334155;
-            border-radius: 14px;
-            padding: 16px 18px;
-            margin-bottom: 12px;
-            transition: all 0.2s ease;
-        }
-        .case-card:hover {
-            border-color: #475569;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-        .case-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-        .case-number {
-            font-weight: 800;
-            font-size: 15px;
-            color: #F59E0B;
-        }
-        .case-court {
-            font-size: 12.5px;
-            color: #94A3B8;
-        }
-        .case-parties {
-            font-size: 14.5px;
-            font-weight: 700;
-            color: #FFFFFF;
-            margin-bottom: 6px;
-        }
-        .case-stage-pill {
-            display: inline-block;
-            font-size: 11.5px;
-            font-weight: 700;
-            padding: 3px 10px;
-            border-radius: 12px;
-            background: rgba(56, 189, 248, 0.15);
-            color: #38BDF8;
-            border: 1px solid rgba(56, 189, 248, 0.3);
-        }
-        .case-date-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 12px;
-            font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 12px;
-            background: rgba(245, 158, 11, 0.15);
-            color: #FBBF24;
-            border: 1px solid rgba(245, 158, 11, 0.3);
-        }
-
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 10px;
-            margin-bottom: 18px;
-        }
-        .stat-card {
-            background: #0F172A;
-            border: 1px solid #334155;
-            border-radius: 12px;
-            padding: 12px 14px;
-            text-align: center;
-        }
-        .stat-card .num {
-            font-size: 22px;
-            font-weight: 800;
-            display: block;
-            margin-bottom: 2px;
-        }
-        .stat-card .label {
-            font-size: 11px;
-            color: #94A3B8;
-        }
-
-        /* Modals */
-        .modal-backdrop {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.78);
-            backdrop-filter: blur(4px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 16px;
-        }
-        .modal-dialog {
-            background: #1E293B;
-            border: 1.5px solid #334155;
-            border-radius: 16px;
-            padding: 24px;
-            width: 100%;
-            max-width: 600px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 18px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #334155;
-        }
-        .modal-title {
-            font-size: 16px;
-            font-weight: 800;
-            color: #FFFFFF;
-        }
-        .btn-close {
-            background: none;
-            border: none;
-            color: #94A3B8;
-            font-size: 22px;
-            cursor: pointer;
-        }
-
-        /* Table Styles in Admin */
-        .admin-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 12.5px;
-            text-align: left;
-            margin-top: 10px;
-        }
-        .admin-table th, .admin-table td {
-            padding: 8px 10px;
-            border-bottom: 1px solid #334155;
-        }
-        .admin-table th {
-            color: #94A3B8;
-            font-weight: 700;
-            background: #0F172A;
-        }
-        .admin-table tr:hover {
-            background: rgba(255,255,255,0.02);
-        }
-
-        /* Toast */
-        .toast {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            background: #1E293B;
-            border: 1.5px solid #10B981;
-            color: #FFFFFF;
-            padding: 12px 22px;
-            border-radius: 12px;
-            font-size: 13.5px;
-            font-weight: 600;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.5);
-            display: none;
-            z-index: 2000;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>विधि डायरी (Vidhi Diary) - ऑफ़लाइन-फ़र्स्ट केस डायरी एवं कॉज लिस्ट</title>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<!-- Google Identity Services (GSI) Client -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans Devanagari", sans-serif;
+background: #0B1120;
+color: #F8FAFC;
+min-height: 100vh;
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 16px 14px;
+}
+.container {
+max-width: 920px;
+width: 100%;
+display: flex;
+flex-direction: column;
+gap: 16px;
+}
+/* Top Header & Navigation */
+.navbar {
+background: #1E293B;
+border: 1px solid #334155;
+border-radius: 16px;
+padding: 14px 20px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+flex-wrap: wrap;
+gap: 12px;
+}
+.brand {
+display: flex;
+align-items: center;
+gap: 10px;
+font-size: 18px;
+font-weight: 800;
+color: #FFFFFF;
+cursor: pointer;
+user-select: none;
+-webkit-user-select: none;
+}
+.brand-icon {
+font-size: 26px;
+}
+.nav-links {
+display: flex;
+gap: 8px;
+flex-wrap: wrap;
+align-items: center;
+}
+.nav-btn {
+background: #0F172A;
+color: #94A3B8;
+border: 1px solid #334155;
+padding: 8px 14px;
+border-radius: 10px;
+font-size: 13px;
+font-weight: 600;
+cursor: pointer;
+display: flex;
+align-items: center;
+gap: 6px;
+transition: all 0.2s ease;
+}
+.nav-btn:hover {
+color: #FFFFFF;
+border-color: #64748B;
+background: #1E293B;
+}
+.nav-btn.active {
+color: #38BDF8;
+border-color: #38BDF8;
+background: rgba(56, 189, 248, 0.12);
+}
+/* Top APK Download Badge */
+.apk-download-badge {
+display: inline-flex;
+align-items: center;
+gap: 8px;
+background: linear-gradient(135deg, #10B981, #059669);
+color: #FFFFFF;
+font-size: 13px;
+font-weight: 700;
+padding: 8px 16px;
+border-radius: 10px;
+text-decoration: none;
+box-shadow: 0 4px 12px rgba(16,185,129,0.3);
+cursor: pointer;
+border: none;
+transition: transform 0.15s ease;
+}
+.apk-download-badge:hover {
+transform: translateY(-1px);
+background: linear-gradient(135deg, #059669, #047857);
+}
+/* Sync Status Badge */
+.sync-badge {
+display: inline-flex;
+align-items: center;
+gap: 6px;
+font-size: 11.5px;
+font-weight: 600;
+padding: 4px 10px;
+border-radius: 20px;
+background: #0F172A;
+border: 1px solid #334155;
+color: #10B981;
+}
+.sync-dot {
+width: 8px;
+height: 8px;
+border-radius: 50%;
+background: #10B981;
+display: inline-block;
+box-shadow: 0 0 6px #10B981;
+}
+/* Card Container */
+.card {
+background: #1E293B;
+border: 1px solid #334155;
+border-radius: 16px;
+padding: 24px;
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+/* Google Official Button Container */
+.google-signin-wrapper {
+display: flex;
+justify-content: center;
+align-items: center;
+width: 100%;
+min-height: 50px;
+margin: 10px 0;
+}
+/* Advocate Email Chip */
+.user-gmail-chip {
+display: inline-flex;
+align-items: center;
+gap: 10px;
+background: #0F172A;
+border: 1.5px solid #38BDF8;
+padding: 8px 16px;
+border-radius: 20px;
+font-size: 13.5px;
+color: #E2E8F0;
+flex-wrap: wrap;
+justify-content: center;
+}
+/* Action Buttons */
+.btn-save {
+background: linear-gradient(135deg, #10B981, #059669);
+color: #FFFFFF;
+border: none;
+padding: 10px 20px;
+border-radius: 10px;
+font-weight: 700;
+font-size: 13.5px;
+cursor: pointer;
+display: inline-flex;
+align-items: center;
+gap: 6px;
+transition: all 0.2s ease;
+}
+.btn-save:hover {
+background: linear-gradient(135deg, #059669, #047857);
+transform: translateY(-1px);
+}
+.btn-cancel {
+background: #0F172A;
+color: #94A3B8;
+border: 1px solid #334155;
+padding: 10px 18px;
+border-radius: 10px;
+font-weight: 600;
+font-size: 13.5px;
+cursor: pointer;
+display: inline-flex;
+align-items: center;
+gap: 6px;
+transition: all 0.2s ease;
+}
+.btn-cancel:hover {
+color: #FFFFFF;
+border-color: #64748B;
+}
+/* Forms */
+.form-group {
+margin-bottom: 14px;
+text-align: left;
+}
+.form-label {
+display: block;
+font-size: 12.5px;
+font-weight: 600;
+color: #CBD5E1;
+margin-bottom: 5px;
+}
+.form-control {
+width: 100%;
+padding: 10px 14px;
+background: #0F172A;
+border: 1px solid #334155;
+border-radius: 10px;
+color: #FFFFFF;
+font-size: 14px;
+outline: none;
+transition: border-color 0.2s ease;
+}
+.form-control:focus {
+border-color: #38BDF8;
+}
+.form-row {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+gap: 12px;
+}
+/* Case Card */
+.case-card {
+background: #0F172A;
+border: 1px solid #334155;
+border-radius: 14px;
+padding: 16px 18px;
+margin-bottom: 12px;
+transition: all 0.2s ease;
+}
+.case-card:hover {
+border-color: #475569;
+box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+.case-header {
+display: flex;
+justify-content: space-between;
+align-items: flex-start;
+flex-wrap: wrap;
+gap: 8px;
+margin-bottom: 8px;
+}
+.case-number {
+font-weight: 800;
+font-size: 15px;
+color: #F59E0B;
+}
+.case-court {
+font-size: 12.5px;
+color: #94A3B8;
+}
+.case-parties {
+font-size: 14.5px;
+font-weight: 700;
+color: #FFFFFF;
+margin-bottom: 6px;
+}
+.case-stage-pill {
+display: inline-block;
+font-size: 11.5px;
+font-weight: 700;
+padding: 3px 10px;
+border-radius: 12px;
+background: rgba(56, 189, 248, 0.15);
+color: #38BDF8;
+border: 1px solid rgba(56, 189, 248, 0.3);
+}
+.case-date-pill {
+display: inline-flex;
+align-items: center;
+gap: 4px;
+font-size: 12px;
+font-weight: 700;
+padding: 4px 10px;
+border-radius: 12px;
+background: rgba(245, 158, 11, 0.15);
+color: #FBBF24;
+border: 1px solid rgba(245, 158, 11, 0.3);
+}
+/* Stats Grid */
+.stats-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+gap: 10px;
+margin-bottom: 18px;
+}
+.stat-card {
+background: #0F172A;
+border: 1px solid #334155;
+border-radius: 12px;
+padding: 12px 14px;
+text-align: center;
+}
+.stat-card .num {
+font-size: 22px;
+font-weight: 800;
+display: block;
+margin-bottom: 2px;
+}
+.stat-card .label {
+font-size: 11px;
+color: #94A3B8;
+}
+/* Toast */
+.toast {
+position: fixed;
+bottom: 24px;
+right: 24px;
+background: #1E293B;
+border: 1.5px solid #10B981;
+color: #FFFFFF;
+padding: 12px 22px;
+border-radius: 12px;
+font-size: 13.5px;
+font-weight: 600;
+box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+display: none;
+z-index: 2000;
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <!-- Top Navigation Bar (Header Title with 5-Tap Secret Admin Access) -->
-        <div class="navbar">
-            <div class="brand" onclick="handleSecretTitleTap()" title="विधि डायरी (एडमिन हेतु 5 बार टैप करें)">
-                <span class="brand-icon">⚖️</span>
-                <div>
-                    <div>विधि डायरी (Vidhi Diary)</div>
-                    <div style="font-size: 11px; color: #94A3B8; font-weight: normal;">
-                        ऑफ़लाइन-फ़र्स्ट केस डायरी • BNS/IPC चार्ट • निजी Google Drive सिंक
-                    </div>
-                </div>
-            </div>
-            <div class="nav-links">
-                <button class="nav-btn active" id="btnAuthView" onclick="switchView('authView')">🔑 अधिवक्ता लॉगिन</button>
-                <button class="nav-btn" id="btnDashboardView" onclick="switchView('dashboardView')">📱 कॉज लिस्ट व केस</button>
-
-                <div class="sync-badge" id="syncStatusBadge">
-                    <span class="sync-dot" id="syncDot"></span>
-                    <span id="syncText">🟢 ऑफ़लाइन-सक्रिय (No Firebase)</span>
-                </div>
-                <button class="nav-btn" style="color: #F87171; border-color: #EF4444;" onclick="clearAllAppStorage()" title="लोकल कैश साफ़ करें">🧹 रीसेट</button>
-            </div>
-            <button type="button" class="apk-download-badge" onclick="triggerApkDownload(this)">
-                <span>📲</span>
-                <span>app-debug.apk डाउनलोड (23 MB)</span>
-            </button>
-        </div>
-
-        <!-- ======================================================== -->
-        <!-- VIEW 1: SIMPLIFIED LOGIN SCREEN (ONLY GOOGLE LOGIN)      -->
-        <!-- ======================================================== -->
-        <div id="authView" class="card">
-            <!-- Header (Also tap-able for secret admin) -->
-            <div style="text-align: center; margin-bottom: 22px; cursor: pointer;" onclick="handleSecretTitleTap()">
-                <div style="font-size: 40px; margin-bottom: 6px;">⚖️</div>
-                <h2 style="font-size: 22px; font-weight: 800; color: #FFFFFF; margin-bottom: 4px;">
-                    विधि डायरी - अधिवक्ता प्रवेश
-                </h2>
-                <p style="font-size: 13.5px; color: #94A3B8;">
-                    दैनिक कॉज लिस्ट, BNS/IPC चार्ट एवं सुरक्षित केस डायरी प्रबंधन प्रणाली
-                </p>
-            </div>
-
-            <!-- APK DOWNLOAD BANNER (DIRECT BROWSER DOWNLOAD) -->
-            <div style="background: linear-gradient(135deg, rgba(37,99,235,0.22), rgba(16,185,129,0.18)); border: 1.5px solid #3B82F6; border-radius: 14px; padding: 16px 18px; margin-bottom: 22px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
-                <div style="font-weight: 800; font-size: 16px; color: #60A5FA; margin-bottom: 5px;">
-                    📲 मोबाइल ऐप APK (सीधा डिवाइस में डाउनलोड करें)
-                </div>
-                <p style="font-size: 13px; color: #CBD5E1; margin-bottom: 12px; line-height: 1.4;">
-                    विधि डायरी ऐप को अपने एंड्रॉइड फ़ोन में इंस्टॉल करने के लिए नीचे दिए गए बटन पर टैप करें:
-                </p>
-                <div style="display: flex; flex-direction: column; gap: 10px; align-items: center; justify-content: center;">
-                    <button type="button" onclick="triggerApkDownload(this)" style="display: inline-flex; align-items: center; justify-content: center; gap: 10px; background: linear-gradient(135deg, #2563EB, #1D4ED8); color: #FFFFFF; font-weight: 800; font-size: 15px; padding: 12px 26px; border-radius: 10px; border: none; cursor: pointer; box-shadow: 0 4px 16px rgba(37,99,235,0.5); transition: all 0.2s ease;">
-                        <span>📥</span>
-                        <span>app-debug.apk डाउनलोड करें (23 MB)</span>
-                    </button>
-                    <a href="/app-debug.apk" download="app-debug.apk" style="font-size: 12.5px; color: #93C5FD; text-decoration: underline; font-weight: 600;">
-                        🔗 यदि बटन काम न करे तो यहाँ क्लिक करें (वैकल्पिक सीधा लिंक)
-                    </a>
-                </div>
-            </div>
-
-            <!-- GOOGLE SIGN-IN PRIMARY BUTTON (ONLY GOOGLE LOGIN - NO PASSWORD) -->
-            <div style="margin-bottom: 22px;">
-                <button type="button" class="btn-google-signin" onclick="handleGoogleSignInClick()">
-                    <svg width="24" height="24" viewBox="0 0 48 48">
-                        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-                        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-                        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-                        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-                    </svg>
-                    <span>Sign in with Google (गूगल से 1-टैप लॉगिन करें)</span>
-                </button>
-                <div style="text-align: center; margin-top: 10px; font-size: 12px; color: #94A3B8;">
-                    🔒 शून्य पासवर्ड • 100% डेटा ग
+<div class="container">
+<!-- Top Navigation Bar -->
+<div class="navbar">
+<div class="brand" onclick="handleSecretTitleTap()" title="विधि डायरी (एडमिन हेतु 5 बार टैप करें)">
+<span class="brand-icon">⚖️</span>
+<div>
+<div>विधि डायरी (Vidhi Diary)</div>
+<div style="font-size: 11px; color: #94A3B8; font-weight: normal;">
+ऑफ़लाइन-फ़र्स्ट केस डायरी • BNS/IPC चार्ट • निजी Google Drive सिंक
+</div>
+</div>
+</div>
+<div class="nav-links">
+<button class="nav-btn active" id="btnAuthView" onclick="switchView('authView')">🔑 अधिवक्ता लॉगिन</button>
+<button class="nav-btn" id="btnDashboardView" onclick="switchView('dashboardView')">📱 कॉज लिस्ट व केस</button>
+<div class="sync-badge" id="syncStatusBadge">
+<span class="sync-dot" id="syncDot"></span>
+<span id="syncText">🟢 ऑफ़लाइन-सक्रिय (No Firebase)</span>
+</div>
+<button class="nav-btn" style="color: #F87171; border-color: #EF4444;" onclick="clearAllAppStorage()" title="लोकल कैश साफ़ करें">🧹 रीसेट</button>
+</div>
+<button type="button" class="apk-download-badge" onclick="triggerApkDownload(this)">
+<span>📲</span>
+<span>app-debug.apk डाउनलोड (23 MB)</span>
+</button>
+</div>
+<!-- ======================================================== -->
+<!-- VIEW 1: AUTH VIEW (LOGIN SCREEN)                         -->
+<!-- ======================================================== -->
+<div id="authView" class="card">
+<div style="text-align: center; margin-bottom: 22px; cursor: pointer;" onclick="handleSecretTitleTap()">
+<div style="font-size: 40px; margin-bottom: 6px;">⚖️</div>
+<h2 style="font-size: 22px; font-weight: 800; color: #FFFFFF; margin-bottom: 4px;">
+विधि डायरी - अधिवक्ता प्रवेश
+</h2>
+<p style="font-size: 13.5px; color: #94A3B8;">
+दैनिक कॉज लिस्ट, BNS/IPC चार्ट एवं सुरक्षित केस डायरी प्रबंधन प्रणाली
+</p>
+</div>
+<!-- APK DOWNLOAD BANNER -->
+<div style="background: linear-gradient(135deg, rgba(37,99,235,0.22), rgba(16,185,129,0.18)); border: 1.5px solid #3B82F6; border-radius: 14px; padding: 16px 18px; margin-bottom: 22px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+<div style="font-weight: 800; font-size: 16px; color: #60A5FA; margin-bottom: 5px;">
+📲 मोबाइल ऐप APK (सीधा डिवाइस में डाउनलोड करें)
+</div>
+<p style="font-size: 13px; color: #CBD5E1; margin-bottom: 12px; line-height: 1.4;">
+विधि डायरी ऐप को अपने एंड्रॉइड फ़ोन में इंस्टॉल करने के लिए नीचे दिए गए बटन पर टैप करें:
+</p>
+<div style="display: flex; flex-direction: column; gap: 10px; align-items: center; justify-content: center;">
+<button type="button" onclick="triggerApkDownload(this)" style="display: inline-flex; align-items: center; justify-content: center; gap: 10px; background: linear-gradient(135deg, #2563EB, #1D4ED8); color: #FFFFFF; font-weight: 800; font-size: 15px; padding: 12px 26px; border-radius: 10px; border: none; cursor: pointer; box-shadow: 0 4px 16px rgba(37,99,235,0.5); transition: all 0.2s ease;">
+<span>📥</span>
+<span>app-debug.apk डाउनलोड करें (23 MB)</span>
+</button>
+<a href="https://github.com/lokendranarwar904-design/vidhi-diary-App" target="_blank" style="font-size: 12.5px; color: #93C5FD; text-decoration: underline; font-weight: 600;">
+🔗 यदि बटन काम न करे तो यहाँ क्लिक करें (वैकल्पिक सीधा लिंक)
+</a>
+</div>
+</div>
+<!-- OFFICIAL GOOGLE SIGN-IN (WORKING 1-TAP LOGIN) -->
+<div style="margin-bottom: 22px; display: flex; flex-direction: column; align-items: center;">
+<!-- Google GSI Setup Block -->
+<div id="g_id_onload"
+data-client_id="1078004617745-otmvctjll91cpb9qka4nftrailo4tt19.apps.googleusercontent.com"
+data-context="signin"
+data-ux_mode="popup"
+data-callback="handleCredentialResponse"
+data-auto_prompt="false">
+</div>
+<!-- Google Rendered Native Button -->
+<div class="google-signin-wrapper">
+<div class="g_id_signin"
+data-type="standard"
+data-shape="rectangular"
+data-theme="filled_blue"
+data-text="signin_with"
+data-size="large"
+data-logo_alignment="left">
+</div>
+</div>
+<div style="text-align: center; margin-top: 10px; font-size: 12px; color: #94A3B8;">
+🔒 शून्य पासवर्ड • 100% डेटा गोपनीयता • निजी ड्राइव सुरक्षित
+</div>
+</div>
+</div>
+<!-- ======================================================== -->
+<!-- VIEW 2: DASHBOARD & CAUSE LIST VIEW                      -->
+<!-- ======================================================== -->
+<div id="dashboardView" class="card" style="display: none;">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 10px;">
+<div>
+<h2 style="font-size: 20px; font-weight: 800; color: #FFFFFF;">📱 दैनिक कॉज लिस्ट व केस डायरी</h2>
+<p style="font-size: 12.5px; color: #94A3B8;">तारीखों एवं मुकदमों का स्मार्ट डिजिटल रजिस्टर</p>
+</div>
+<div class="user-gmail-chip">
+<span>⚖️ <strong id="chipAdvocateName">अधिवक्ता</strong></span>
+<span style="font-size: 12px; color: #94A3B8;" id="chipAdvocateEmail">वकील खाता</span>
+<button class="nav-btn" style="padding: 4px 10px; font-size: 11px; color:#F87171; border-color:#EF4444;" onclick="logoutAdvocate()">लॉगआउट</button>
+</div>
+</div>
+<!-- Stats -->
+<div class="stats-grid">
+<div class="stat-card">
+<span class="num" style="color: #38BDF8;" id="statTotalCases">0</span>
+<span class="label">कुल दर्ज केस</span>
+</div>
+<div class="stat-card">
+<span class="num" style="color: #F59E0B;" id="statTodayCases">0</span>
+<span class="label">आज की पेशी</span>
+</div>
+<div class="stat-card">
+<span class="num" style="color: #10B981;" id="statUpcomingCases">0</span>
+<span class="label">आगामी तारीखें</span>
+</div>
+</div>
+<!-- Case Entry Form -->
+<div style="background: #0F172A; border: 1px solid #334155; border-radius: 14px; padding: 18px; margin-bottom: 20px;">
+<h3 style="font-size: 15px; font-weight: 700; color: #38BDF8; margin-bottom: 12px;">➕ नया केस डायरी में दर्ज करें</h3>
+<div class="form-row">
+<div class="form-group">
+<label class="form-label">केस संख्या / वर्ष</label>
+<input type="text" id="inputCaseNo" class="form-control" placeholder="उदा. Cr. Case 204/2026">
+</div>
+<div class="form-group">
+<label class="form-label">न्यायालय (Court)</label>
+<input type="text" id="inputCourt" class="form-control" placeholder="उदा. CJM Court, Indore">
+</div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label class="form-label">पक्षकार (वादी बनाम प्रतिवादी)</label>
+<input type="text" id="inputParties" class="form-control" placeholder="उदा. रमेश कुमार बनाम स्टेट">
+</div>
+<div class="form-group">
+<label class="form-label">केस स्टेज (प्रक्रम) / धारा</label>
+<input type="text" id="inputStage" class="form-control" placeholder="उदा. साक्ष्य / BNS 103">
+</div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label class="form-label">अगली पेशी तारीख</label>
+<input type="date" id="inputDate" class="form-control">
+</div>
+<div class="form-group" style="display: flex; align-items: flex-end;">
+<button type="button" class="btn-save" style="width: 100%; justify-content: center;" onclick="saveNewCase()">
+💾 केस सुरक्षित करें
+</button>
+</div>
+</div>
+</div>
+<!-- Case List Container -->
+<div>
+<h3 style="font-size: 15px; font-weight: 700; color: #FFFFFF; margin-bottom: 10px;">📋 केस सूची (Cause List)</h3>
+<div id="casesList">
+<div style="text-align: center; padding: 24px; color: #64748B; font-size: 13px;">
+डायरी में अभी कोई केस दर्ज नहीं है। ऊपर दिए गए फ़ॉर्म से पहला केस जोड़ें।
+</div>
+</div>
+</div>
+</div>
+<!-- Toast Notification -->
+<div class="toast" id="appToast">सूचना</div>
+</div>
+<!-- JAVASCRIPT LOGIC -->
+<script>
+// Secret Title Tap Admin Access
+let tapCount = 0;
+let tapTimer = null;
+function handleSecretTitleTap() {
+tapCount++;
+clearTimeout(tapTimer);
+tapTimer = setTimeout(() => { tapCount = 0; }, 1500);
+if (tapCount >= 5) {
+tapCount = 0;
+showToast("🔐 एडमिन एक्सेस: डेवलपर मोड सक्रिय");
+}
+}
+// APK Download Trigger
+function triggerApkDownload(btn) {
+showToast("📲 ऐप डाउनलोड शुरू हो रहा है...");
+const link = document.createElement('a');
+link.href = 'https://github.com/lokendranarwar904-design/vidhi-diary-App/raw/main/app-debug.apk';
+link.download = 'app-debug.apk';
+document.body.appendChild(link);
+link.click();
+document.body.removeChild(link);
+}
+// View Switching
+function switchView(viewId) {
+document.getElementById('authView').style.display = (viewId === 'authView') ? 'block' : 'none';
+document.getElementById('dashboardView').style.display = (viewId === 'dashboardView') ? 'block' : 'none';
+document.getElementById('btnAuthView').classList.toggle('active', viewId === 'authView');
+document.getElementById('btnDashboardView').classList.toggle('active', viewId === 'dashboardView');
+}
+// Google Identity Services (GIS) Response Callback
+function handleCredentialResponse(response) {
+try {
+const base64Url = response.credential.split('.')[1];
+const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+}).join(''));
+const user = JSON.parse(jsonPayload);
+// LocalStorage में अधिवक्ता डेटा सुरक्षित
+localStorage.setItem('advocate_logged_in', 'true');
+localStorage.setItem('advocate_name', user.name || 'अधिवक्ता');
+localStorage.setItem('advocate_email', user.email || '');
+showToast("लॉगिन सफल: " + (user.name || 'अधिवक्ता'));
+initAdvocateSession(user.name, user.email);
+} catch (err) {
+alert("लॉगिन डेटा पढ़ने में समस्या: " + err.message);
+}
+}
+function initAdvocateSession(name, email) {
+document.getElementById('chipAdvocateName').textContent = name;
+document.getElementById('chipAdvocateEmail').textContent = email;
+switchView('dashboardView');
+renderCases();
+}
+function logoutAdvocate() {
+localStorage.removeItem('advocate_logged_in');
+localStorage.removeItem('advocate_name');
+localStorage.removeItem('advocate_email');
+showToast("सफलतापूर्वक लॉगआउट किया गया");
+switchView('authView');
+setTimeout(() => { window.location.reload(); }, 600);
+}
+// Case Management Logic
+function saveNewCase() {
+const caseNo = document.getElementById('inputCaseNo').value.trim();
+const court = document.getElementById('inputCourt').value.trim();
+const parties = document.getElementById('inputParties').value.trim();
+const stage = document.getElementById('inputStage').value.trim();
+const date = document.getElementById('inputDate').value;
+if (!parties || !caseNo) {
+alert("कृपया कम से कम केस संख्या और पक्षकारों का नाम दर्ज करें।");
+return;
+}
+const cases = JSON.parse(localStorage.getItem('vidhi_cases') || '[]');
+cases.push({
+id: Date.now(),
+caseNo: caseNo,
+court: court || 'माननीय न्यायालय',
+parties: parties,
+stage: stage || 'प्रक्रम दर्ज नहीं',
+date: date || 'तारीख दर्ज नहीं'
+});
+localStorage.setItem('vidhi_cases', JSON.stringify(cases));
+showToast("✅ केस डायरी में दर्ज किया गया!");
+// Form Reset
+document.getElementById('inputCaseNo').value = '';
+document.getElementById('inputCourt').value = '';
+document.getElementById('inputParties').value = '';
+document.getElementById('inputStage').value = '';
+document.getElementById('inputDate').value = '';
+renderCases();
+}
+function renderCases() {
+const cases = JSON.parse(localStorage.getItem('vidhi_cases') || '[]');
+const container = document.getElementById('casesList');
+document.getElementById('statTotalCases').textContent = cases.length;
+if (cases.length === 0) {
+container.innerHTML = <div style="text-align: center; padding: 24px; color: #64748B; font-size: 13px;"> डायरी में अभी कोई केस दर्ज नहीं है। ऊपर दिए गए फ़ॉर्म से पहला केस जोड़ें। </div>;
+return;
+}
+container.innerHTML = cases.map((c, index) => <div class="case-card"> <div class="case-header"> <div> <span class="case-number">${escapeHtml(c.caseNo)}</span> <span class="case-court"> • ${escapeHtml(c.court)}</span> </div> <span class="case-date-pill">📅 ${escapeHtml(c.date)}</span> </div> <div class="case-parties">${escapeHtml(c.parties)}</div> <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;"> <span class="case-stage-pill">${escapeHtml(c.stage)}</span> <button onclick="deleteCase(${c.id})" style="background: none; border: none; color: #F87171; font-size: 12px; cursor: pointer;">🗑️ हटाएँ</button> </div> </div>).join('');
+}
+function deleteCase(id) {
+if (!confirm("क्या आप इस केस को डायरी से हटाना चाहते हैं?")) return;
+let cases = JSON.parse(localStorage.getItem('vidhi_cases') || '[]');
+cases = cases.filter(c => c.id !== id);
+localStorage.setItem('vidhi_cases', JSON.stringify(cases));
+showToast("केस हटा दिया गया");
+renderCases();
+}
+function clearAllAppStorage() {
+if (confirm("क्या आप सारा लोकल डेटा और कैश साफ़ करना चाहते हैं?")) {
+localStorage.clear();
+showToast("डेटा रीसेट पूर्ण");
+setTimeout(() => { window.location.reload(); }, 600);
+}
+}
+function showToast(msg) {
+const toast = document.getElementById('appToast');
+toast.textContent = msg;
+toast.style.display = 'block';
+setTimeout(() => { toast.style.display = 'none'; }, 3000);
+}
+function escapeHtml(str) {
+if (!str) return '';
+return str.replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">");
+}
+// Initial Load Check
+window.addEventListener('DOMContentLoaded', () => {
+const isLoggedIn = localStorage.getItem('advocate_logged_in');
+if (isLoggedIn === 'true') {
+const name = localStorage.getItem('advocate_name') || 'अधिवक्ता';
+const email = localStorage.getItem('advocate_email') || 'वकील खाता';
+initAdvocateSession(name, email);
+} else {
+switchView('authView');
+}
+});
+</script>
+</body>
+</html>
