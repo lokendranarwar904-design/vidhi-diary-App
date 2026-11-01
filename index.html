@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>विधि डायरी (Vidhi Diary) - ऑफ़लाइन-फ़र्स्ट केस डायरी एवं कॉज लिस्ट</title>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+​<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- Google Identity Services (GSI) Client -->
+​<!-- Google Identity Services (GSI) Client -->
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<style>
+​<style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
 font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans Devanagari", sans-serif;
@@ -28,7 +28,7 @@ display: flex;
 flex-direction: column;
 gap: 16px;
 }
-/* Top Header & Navigation */
+​/* Top Header & Navigation */
 .navbar {
 background: #1E293B;
 border: 1px solid #334155;
@@ -84,7 +84,7 @@ color: #38BDF8;
 border-color: #38BDF8;
 background: rgba(56, 189, 248, 0.12);
 }
-/* Top APK Download Badge */
+​/* Top APK Download Badge */
 .apk-download-badge {
 display: inline-flex;
 align-items: center;
@@ -105,7 +105,7 @@ transition: transform 0.15s ease;
 transform: translateY(-1px);
 background: linear-gradient(135deg, #059669, #047857);
 }
-/* Sync Status Badge */
+​/* Sync Status Badge */
 .sync-badge {
 display: inline-flex;
 align-items: center;
@@ -126,7 +126,7 @@ background: #10B981;
 display: inline-block;
 box-shadow: 0 0 6px #10B981;
 }
-/* Card Container */
+​/* Card Container */
 .card {
 background: #1E293B;
 border: 1px solid #334155;
@@ -134,7 +134,7 @@ border-radius: 16px;
 padding: 24px;
 box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
-/* Google Official Button Container */
+​/* Google Official Button Container */
 .google-signin-wrapper {
 display: flex;
 justify-content: center;
@@ -143,7 +143,7 @@ width: 100%;
 min-height: 50px;
 margin: 10px 0;
 }
-/* Advocate Email Chip */
+​/* Advocate Email Chip */
 .user-gmail-chip {
 display: inline-flex;
 align-items: center;
@@ -157,7 +157,7 @@ color: #E2E8F0;
 flex-wrap: wrap;
 justify-content: center;
 }
-/* Action Buttons */
+​/* Action Buttons */
 .btn-save {
 background: linear-gradient(135deg, #10B981, #059669);
 color: #FFFFFF;
@@ -194,7 +194,7 @@ transition: all 0.2s ease;
 color: #FFFFFF;
 border-color: #64748B;
 }
-/* Forms */
+​/* Forms */
 .form-group {
 margin-bottom: 14px;
 text-align: left;
@@ -225,7 +225,7 @@ display: grid;
 grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 gap: 12px;
 }
-/* Case Card */
+​/* Case Card */
 .case-card {
 background: #0F172A;
 border: 1px solid #334155;
@@ -283,7 +283,7 @@ background: rgba(245, 158, 11, 0.15);
 color: #FBBF24;
 border: 1px solid rgba(245, 158, 11, 0.3);
 }
-/* Stats Grid */
+​/* Stats Grid */
 .stats-grid {
 display: grid;
 grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
@@ -307,7 +307,7 @@ margin-bottom: 2px;
 font-size: 11px;
 color: #94A3B8;
 }
-/* Toast */
+​/* Toast */
 .toast {
 position: fixed;
 bottom: 24px;
@@ -341,7 +341,7 @@ z-index: 2000;
 <div class="nav-links">
 <button class="nav-btn active" id="btnAuthView" onclick="switchView('authView')">🔑 अधिवक्ता लॉगिन</button>
 <button class="nav-btn" id="btnDashboardView" onclick="switchView('dashboardView')">📱 कॉज लिस्ट व केस</button>
-<div class="sync-badge" id="syncStatusBadge">
+​<div class="sync-badge" id="syncStatusBadge">
 <span class="sync-dot" id="syncDot"></span>
 <span id="syncText">🟢 ऑफ़लाइन-सक्रिय (No Firebase)</span>
 </div>
@@ -352,7 +352,7 @@ z-index: 2000;
 <span>app-debug.apk डाउनलोड (23 MB)</span>
 </button>
 </div>
-<!-- ======================================================== -->
+​<!-- ======================================================== -->
 <!-- VIEW 1: AUTH VIEW (LOGIN SCREEN)                         -->
 <!-- ======================================================== -->
 <div id="authView" class="card">
@@ -365,7 +365,7 @@ z-index: 2000;
 दैनिक कॉज लिस्ट, BNS/IPC चार्ट एवं सुरक्षित केस डायरी प्रबंधन प्रणाली
 </p>
 </div>
-<!-- APK DOWNLOAD BANNER -->
+​<!-- APK DOWNLOAD BANNER -->
 <div style="background: linear-gradient(135deg, rgba(37,99,235,0.22), rgba(16,185,129,0.18)); border: 1.5px solid #3B82F6; border-radius: 14px; padding: 16px 18px; margin-bottom: 22px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
 <div style="font-weight: 800; font-size: 16px; color: #60A5FA; margin-bottom: 5px;">
 📲 मोबाइल ऐप APK (सीधा डिवाइस में डाउनलोड करें)
@@ -383,9 +383,9 @@ z-index: 2000;
 </a>
 </div>
 </div>
-<!-- OFFICIAL GOOGLE SIGN-IN (WORKING 1-TAP LOGIN) -->
+​<!-- OFFICIAL GOOGLE SIGN-IN (WORKING 1-TAP LOGIN) -->
 <div style="margin-bottom: 22px; display: flex; flex-direction: column; align-items: center;">
-<!-- Google GSI Setup Block -->
+​<!-- Google GSI Setup Block -->
 <div id="g_id_onload"
 data-client_id="1078004617745-otmvctjll91cpb9qka4nftrailo4tt19.apps.googleusercontent.com"
 data-context="signin"
@@ -393,7 +393,7 @@ data-ux_mode="popup"
 data-callback="handleCredentialResponse"
 data-auto_prompt="false">
 </div>
-<!-- Google Rendered Native Button -->
+​<!-- Google Rendered Native Button -->
 <div class="google-signin-wrapper">
 <div class="g_id_signin"
 data-type="standard"
@@ -404,12 +404,12 @@ data-size="large"
 data-logo_alignment="left">
 </div>
 </div>
-<div style="text-align: center; margin-top: 10px; font-size: 12px; color: #94A3B8;">
+​<div style="text-align: center; margin-top: 10px; font-size: 12px; color: #94A3B8;">
 🔒 शून्य पासवर्ड • 100% डेटा गोपनीयता • निजी ड्राइव सुरक्षित
 </div>
 </div>
 </div>
-<!-- ======================================================== -->
+​<!-- ======================================================== -->
 <!-- VIEW 2: DASHBOARD & CAUSE LIST VIEW                      -->
 <!-- ======================================================== -->
 <div id="dashboardView" class="card" style="display: none;">
@@ -424,7 +424,7 @@ data-logo_alignment="left">
 <button class="nav-btn" style="padding: 4px 10px; font-size: 11px; color:#F87171; border-color:#EF4444;" onclick="logoutAdvocate()">लॉगआउट</button>
 </div>
 </div>
-<!-- Stats -->
+​<!-- Stats -->
 <div class="stats-grid">
 <div class="stat-card">
 <span class="num" style="color: #38BDF8;" id="statTotalCases">0</span>
@@ -439,7 +439,7 @@ data-logo_alignment="left">
 <span class="label">आगामी तारीखें</span>
 </div>
 </div>
-<!-- Case Entry Form -->
+​<!-- Case Entry Form -->
 <div style="background: #0F172A; border: 1px solid #334155; border-radius: 14px; padding: 18px; margin-bottom: 20px;">
 <h3 style="font-size: 15px; font-weight: 700; color: #38BDF8; margin-bottom: 12px;">➕ नया केस डायरी में दर्ज करें</h3>
 <div class="form-row">
@@ -474,7 +474,7 @@ data-logo_alignment="left">
 </div>
 </div>
 </div>
-<!-- Case List Container -->
+​<!-- Case List Container -->
 <div>
 <h3 style="font-size: 15px; font-weight: 700; color: #FFFFFF; margin-bottom: 10px;">📋 केस सूची (Cause List)</h3>
 <div id="casesList">
@@ -484,10 +484,10 @@ data-logo_alignment="left">
 </div>
 </div>
 </div>
-<!-- Toast Notification -->
+​<!-- Toast Notification -->
 <div class="toast" id="appToast">सूचना</div>
 </div>
-<!-- JAVASCRIPT LOGIC -->
+​<!-- JAVASCRIPT LOGIC -->
 <script>
 // Secret Title Tap Admin Access
 let tapCount = 0;
@@ -501,7 +501,7 @@ tapCount = 0;
 showToast("🔐 एडमिन एक्सेस: डेवलपर मोड सक्रिय");
 }
 }
-// APK Download Trigger
+​// APK Download Trigger
 function triggerApkDownload(btn) {
 showToast("📲 ऐप डाउनलोड शुरू हो रहा है...");
 const link = document.createElement('a');
@@ -511,14 +511,14 @@ document.body.appendChild(link);
 link.click();
 document.body.removeChild(link);
 }
-// View Switching
+​// View Switching
 function switchView(viewId) {
 document.getElementById('authView').style.display = (viewId === 'authView') ? 'block' : 'none';
 document.getElementById('dashboardView').style.display = (viewId === 'dashboardView') ? 'block' : 'none';
-document.getElementById('btnAuthView').classList.toggle('active', viewId === 'authView');
+​document.getElementById('btnAuthView').classList.toggle('active', viewId === 'authView');
 document.getElementById('btnDashboardView').classList.toggle('active', viewId === 'dashboardView');
 }
-// Google Identity Services (GIS) Response Callback
+​// Google Identity Services (GIS) Response Callback
 function handleCredentialResponse(response) {
 try {
 const base64Url = response.credential.split('.')[1];
@@ -526,24 +526,24 @@ const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
 const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
 return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
 }).join(''));
-const user = JSON.parse(jsonPayload);
-// LocalStorage में अधिवक्ता डेटा सुरक्षित
+​const user = JSON.parse(jsonPayload);
+​// LocalStorage में अधिवक्ता डेटा सुरक्षित
 localStorage.setItem('advocate_logged_in', 'true');
 localStorage.setItem('advocate_name', user.name || 'अधिवक्ता');
 localStorage.setItem('advocate_email', user.email || '');
-showToast("लॉगिन सफल: " + (user.name || 'अधिवक्ता'));
+​showToast("लॉगिन सफल: " + (user.name || 'अधिवक्ता'));
 initAdvocateSession(user.name, user.email);
 } catch (err) {
 alert("लॉगिन डेटा पढ़ने में समस्या: " + err.message);
 }
 }
-function initAdvocateSession(name, email) {
+​function initAdvocateSession(name, email) {
 document.getElementById('chipAdvocateName').textContent = name;
 document.getElementById('chipAdvocateEmail').textContent = email;
 switchView('dashboardView');
 renderCases();
 }
-function logoutAdvocate() {
+​function logoutAdvocate() {
 localStorage.removeItem('advocate_logged_in');
 localStorage.removeItem('advocate_name');
 localStorage.removeItem('advocate_email');
@@ -551,18 +551,18 @@ showToast("सफलतापूर्वक लॉगआउट किया ग
 switchView('authView');
 setTimeout(() => { window.location.reload(); }, 600);
 }
-// Case Management Logic
+​// Case Management Logic
 function saveNewCase() {
 const caseNo = document.getElementById('inputCaseNo').value.trim();
 const court = document.getElementById('inputCourt').value.trim();
 const parties = document.getElementById('inputParties').value.trim();
 const stage = document.getElementById('inputStage').value.trim();
 const date = document.getElementById('inputDate').value;
-if (!parties || !caseNo) {
+​if (!parties || !caseNo) {
 alert("कृपया कम से कम केस संख्या और पक्षकारों का नाम दर्ज करें।");
 return;
 }
-const cases = JSON.parse(localStorage.getItem('vidhi_cases') || '[]');
+​const cases = JSON.parse(localStorage.getItem('vidhi_cases') || '[]');
 cases.push({
 id: Date.now(),
 caseNo: caseNo,
@@ -571,27 +571,27 @@ parties: parties,
 stage: stage || 'प्रक्रम दर्ज नहीं',
 date: date || 'तारीख दर्ज नहीं'
 });
-localStorage.setItem('vidhi_cases', JSON.stringify(cases));
+​localStorage.setItem('vidhi_cases', JSON.stringify(cases));
 showToast("✅ केस डायरी में दर्ज किया गया!");
-// Form Reset
+​// Form Reset
 document.getElementById('inputCaseNo').value = '';
 document.getElementById('inputCourt').value = '';
 document.getElementById('inputParties').value = '';
 document.getElementById('inputStage').value = '';
 document.getElementById('inputDate').value = '';
-renderCases();
+​renderCases();
 }
-function renderCases() {
+​function renderCases() {
 const cases = JSON.parse(localStorage.getItem('vidhi_cases') || '[]');
 const container = document.getElementById('casesList');
 document.getElementById('statTotalCases').textContent = cases.length;
-if (cases.length === 0) {
+​if (cases.length === 0) {
 container.innerHTML = <div style="text-align: center; padding: 24px; color: #64748B; font-size: 13px;"> डायरी में अभी कोई केस दर्ज नहीं है। ऊपर दिए गए फ़ॉर्म से पहला केस जोड़ें। </div>;
 return;
 }
-container.innerHTML = cases.map((c, index) => <div class="case-card"> <div class="case-header"> <div> <span class="case-number">${escapeHtml(c.caseNo)}</span> <span class="case-court"> • ${escapeHtml(c.court)}</span> </div> <span class="case-date-pill">📅 ${escapeHtml(c.date)}</span> </div> <div class="case-parties">${escapeHtml(c.parties)}</div> <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;"> <span class="case-stage-pill">${escapeHtml(c.stage)}</span> <button onclick="deleteCase(${c.id})" style="background: none; border: none; color: #F87171; font-size: 12px; cursor: pointer;">🗑️ हटाएँ</button> </div> </div>).join('');
+​container.innerHTML = cases.map((c, index) => <div class="case-card"> <div class="case-header"> <div> <span class="case-number">${escapeHtml(c.caseNo)}</span> <span class="case-court"> • ${escapeHtml(c.court)}</span> </div> <span class="case-date-pill">📅 ${escapeHtml(c.date)}</span> </div> <div class="case-parties">${escapeHtml(c.parties)}</div> <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;"> <span class="case-stage-pill">${escapeHtml(c.stage)}</span> <button onclick="deleteCase(${c.id})" style="background: none; border: none; color: #F87171; font-size: 12px; cursor: pointer;">🗑️ हटाएँ</button> </div> </div>).join('');
 }
-function deleteCase(id) {
+​function deleteCase(id) {
 if (!confirm("क्या आप इस केस को डायरी से हटाना चाहते हैं?")) return;
 let cases = JSON.parse(localStorage.getItem('vidhi_cases') || '[]');
 cases = cases.filter(c => c.id !== id);
@@ -599,24 +599,24 @@ localStorage.setItem('vidhi_cases', JSON.stringify(cases));
 showToast("केस हटा दिया गया");
 renderCases();
 }
-function clearAllAppStorage() {
+​function clearAllAppStorage() {
 if (confirm("क्या आप सारा लोकल डेटा और कैश साफ़ करना चाहते हैं?")) {
 localStorage.clear();
 showToast("डेटा रीसेट पूर्ण");
 setTimeout(() => { window.location.reload(); }, 600);
 }
 }
-function showToast(msg) {
+​function showToast(msg) {
 const toast = document.getElementById('appToast');
 toast.textContent = msg;
 toast.style.display = 'block';
 setTimeout(() => { toast.style.display = 'none'; }, 3000);
 }
-function escapeHtml(str) {
+​function escapeHtml(str) {
 if (!str) return '';
 return str.replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">");
 }
-// Initial Load Check
+​// Initial Load Check
 window.addEventListener('DOMContentLoaded', () => {
 const isLoggedIn = localStorage.getItem('advocate_logged_in');
 if (isLoggedIn === 'true') {
